@@ -24,8 +24,10 @@ const App = () => {
       case 'firstName':
         if (!value.trim()) {
           tempErrors.firstName = "First Name is required.";
+
         } else if (!namePattern.test(value)) {
           tempErrors.firstName = "First Name can only contain alphabets with no spaces, numbers, or special characters.";
+
         } else {
           delete tempErrors.firstName;
         }
@@ -34,8 +36,10 @@ const App = () => {
       case 'lastName':
         if (!value.trim()) {
           tempErrors.lastName = "Last Name is required.";
+
         } else if (!namePattern.test(value)) {
           tempErrors.lastName = "Last Name can only contain alphabets with no spaces, numbers, or special characters.";
+
         } else {
           delete tempErrors.lastName;
         }
@@ -44,8 +48,10 @@ const App = () => {
       case 'email':
         if (!value.trim()) {
           tempErrors.email = "Email is required"
+
         } else if (!emailPattern.test(value)) {
           tempErrors.email = "Please enter avalid email address"
+
         } else {
           delete tempErrors.email;
         }
@@ -54,8 +60,10 @@ const App = () => {
       case 'password':
         if (!value.trim()) {
           tempErrors.password = "password is required"
+
         } else if (value.length < 6) {
           tempErrors.password = "password must be atleast be 8 characters"
+
         } else {
           delete tempErrors.password;
         }
@@ -64,8 +72,10 @@ const App = () => {
       case 'confirmPassword':
         if (!value.trim()) {
           tempErrors.confirmPassword = "Confirm Password is required.";
+
         } else if (value !== formState.password) {
           tempErrors.confirmPassword = "Passwords do not match.";
+
         } else {
           delete tempErrors.confirmPassword;
         }
@@ -76,6 +86,7 @@ const App = () => {
     }
 
     setErrors(tempErrors);
+
   }
 
   const handleChange = (e) => {
@@ -84,28 +95,19 @@ const App = () => {
       ...formState,
       [name]: type === "checkbox" ? checked : value,
     });
-    console.log(formState);
-    
-  };
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
     validateField(name, value);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (Object.keys(errors).length === 0 && formState.checkBox) {
+      console.log("Form Data", formState);
+    } else {
+      console.log("Form validation failed", errors);
 
-    const isValid = validateField();
-
-    if(isValid && formState.checkBox){
-      console.log("FOrm Data:",formState);
-      
-    }else{
-      console.log("Form Validation failed");
-      
     }
   }
+
   const togglePassword = () => {
     setShowPassword(!showPassword);
   }
@@ -126,12 +128,12 @@ const App = () => {
                 name='firstName'
                 value={formState.firstName}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 required
                 spellCheck='false'
+                autoComplete='off'
                 className='w-full bg-[rgba(29,29,29,0.75)] px-5 py-4 rounded-xl focus:outline-none peer' />
               <span className={`absolute left-3 text-gray-500 text-md transition-all duration-300 ease-in-out peer-focus:top-1 peer-focus:left-3 peer-focus:text-xs ${formState.firstName ? 'top-1 left-3 text-xs' : 'top-4 text-sm'}
-                ${errors.firstName ? 'text-red-500' : formState.firstName ? 'text-green-500' : 'text-gray-500'}`}>
+          ${errors.firstName ? 'text-red-500' : formState.firstName ? 'text-green-500' : 'text-gray-500'}`}>
                 Firstname
               </span>
             </label>
@@ -141,12 +143,12 @@ const App = () => {
                 name='lastName'
                 value={formState.lastName}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 required
                 spellCheck='false'
+                autoComplete='off'
                 className='w-full bg-[rgba(29,29,29,0.75)] px-5 py-4 rounded-xl focus:outline-none peer' />
               <span className={`absolute left-3 text-gray-500 text-md transition-all duration-300 ease-in-out peer-focus:top-1 peer-focus:left-3 peer-focus:text-xs ${formState.lastName ? 'top-1 left-3 text-xs' : 'top-4 text-sm'}
-                ${errors.lastName ? 'text-red-500' : formState.lastName ? 'text-green-500' : 'text-gray-500'}`}>
+          ${errors.lastName ? 'text-red-500' : formState.lastName ? 'text-green-500' : 'text-gray-500'}`}>
                 Lastname
               </span>
             </label>
@@ -160,52 +162,52 @@ const App = () => {
                 name='email'
                 value={formState.email}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 required
                 spellCheck='false'
+                autoComplete='off'
                 className='w-full bg-[rgba(29,29,29,0.75)] px-5 py-4 rounded-xl focus:outline-none peer' />
               <span className={`absolute left-3 text-gray-500 text-md transition-all duration-300 ease-in-out peer-focus:top-1 peer-focus:left-3 peer-focus:text-xs ${formState.email ? 'top-1 left-3 text-xs' : 'top-4 text-sm'}
-                ${errors.email ? 'text-red-500' : formState.email ? 'text-green-500' : 'text-gray-500'}`}>
+          ${errors.email ? 'text-red-500' : formState.email ? 'text-green-500' : 'text-gray-500'}`}>
                 Email
               </span>
             </label>
           </div>
 
-          {/* password */}
+          {/* Password */}
           <div className='relative bg-inherit rounded-xl'>
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               value={formState.password}
               onChange={handleChange}
-              onBlur={handleBlur}
               required
+              autoComplete='new-password'
               className='w-full bg-[rgba(29,29,29,0.75)] p-5 rounded-xl focus:outline-none peer' />
             <button type='button' onClick={togglePassword} className='absolute inset-y-0 right-3 items-center text-gray-600 hover:text-gray-400 focus:outline-none'>{showPassword ? <Eye /> : <EyeOff />}</button>
             <span
               className={`absolute left-3 text-gray-500 text-md transition-all duration-300 ease-in-out peer-focus:top-1 peer-focus:left-3 peer-focus:text-xs ${formState.password ? 'top-1 left-3 text-xs' : 'top-4 text-sm'}
-      ${errors.password ? 'text-red-500' : formState.password ? 'text-green-500' : 'text-gray-500'}`}
+          ${errors.password ? 'text-red-500' : formState.password ? 'text-green-500' : 'text-gray-500'}`}
             >
               Password
             </span>
           </div>
 
-           {/*Confirm password */}
-           <div className='relative bg-inherit rounded-xl'>
+          {/* Confirm Password */}
+          <div className='relative bg-inherit rounded-xl'>
             <input
               type={showCPassword ? "text" : "password"}
               name="confirmPassword"
               value={formState.confirmPassword}
               onChange={handleChange}
-              onBlur={handleBlur}
               required
+              autoComplete='new-password'
               className='w-full bg-[rgba(29,29,29,0.75)] p-5 rounded-xl focus:outline-none peer' />
             <button type='button' onClick={toggleCPassword} className='absolute inset-y-0 right-3 items-center text-gray-600 hover:text-gray-400 focus:outline-none'>{showCPassword ? <Eye /> : <EyeOff />}</button>
             <span
               className={`absolute left-3 text-gray-500 text-md transition-all duration-300 ease-in-out peer-focus:top-1 peer-focus:left-3 peer-focus:text-xs ${formState.confirmPassword ? 'top-1 left-3 text-xs' : 'top-4 text-sm'}
-      ${errors.confirmPassword ? 'text-red-500' : formState.confirmPassword ? 'text-green-500' : 'text-gray-500'}`}
+          ${errors.confirmPassword ? 'text-red-500' : formState.confirmPassword ? 'text-green-500' : 'text-gray-500'}`}
             >
-             Confirm Password
+              Confirm Password
             </span>
           </div>
 
@@ -213,9 +215,10 @@ const App = () => {
             <input type="checkbox" name="checkBox" checked={formState.checkBox} onChange={handleChange} id="" className='outline-none mt-1' />
             <span>Term & condition</span>
           </div>
-          <button type='submit' disabled={!formState.checkBox}  className={`p-3 rounded-xl ${formState.checkBox ? 'bg-gray-500 text-white' : 'bg-[rgba(29,29,29,0.75)] text-gray-400 cursor-not-allowed'}`}>Submit</button>
+          <button type='submit' disabled={!formState.checkBox} className={`p-3 rounded-xl ${formState.checkBox ? 'bg-gray-500 text-white' : 'bg-[rgba(29,29,29,0.75)] text-gray-400 cursor-not-allowed'}`}>Submit</button>
         </div>
       </form>
+
     </div>
   )
 }
