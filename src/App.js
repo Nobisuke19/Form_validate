@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './App.css'
 import { Eye, EyeOff } from 'lucide-react'
+import { toast } from 'react-toastify'
 
 const App = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -101,8 +102,12 @@ const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.keys(errors).length === 0 && formState.checkBox) {
+      toast.success("Registered successfully!");
       console.log("Form Data", formState);
     } else {
+      const errMsg = Object.values(errors).join(',')
+      toast.error("Form validation failed")
+      toast.warning(errMsg)
       console.log("Form validation failed", errors);
 
     }
@@ -116,8 +121,10 @@ const App = () => {
     setShowCPassword(!showCPassword);
   }
 
+
   return (
-    <div className='min-h-screen overflow-hidden flex justify-center items-center'>
+    <div className='min-h-screen overflow-hidden flex flex-col justify-center items-center'>
+      {/* <ToastContainer/> */}
       <form action="" className='' onSubmit={handleSubmit}>
         <div id='card' className='overflow-hidden rounded-xl bg-[rgba(29,29,29,0.75)] p-6 flex flex-col gap-4 w-full'>
           {/* firstname & lastname */}
@@ -218,7 +225,6 @@ const App = () => {
           <button type='submit' disabled={!formState.checkBox} className={`p-3 rounded-xl ${formState.checkBox ? 'bg-gray-500 text-white' : 'bg-[rgba(29,29,29,0.75)] text-gray-400 cursor-not-allowed'}`}>Submit</button>
         </div>
       </form>
-
     </div>
   )
 }
